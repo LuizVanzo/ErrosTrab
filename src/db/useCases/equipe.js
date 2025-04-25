@@ -7,7 +7,10 @@ async function getAllEquipes() {
     const equipes = result.rows.map((equipe) => {
       let segundos = 0;
       if (equipe.tempo) {
-        const diff = (new Date() - new Date(equipe.tempo)) / 1000;
+        // Converte o tempo do banco e o momento atual para America/Sao_Paulo
+        const now = utcToZonedTime(new Date(), 'America/Sao_Paulo');
+        const tempo = utcToZonedTime(new Date(equipe.tempo), 'America/Sao_Paulo');
+        const diff = (now - tempo) / 1000;
         segundos = Math.floor(Math.max(0, diff)); // Evita valores negativos
       }
       return { ...equipe, tempo: segundos };
