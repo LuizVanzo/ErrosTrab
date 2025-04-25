@@ -1,4 +1,5 @@
 const { pool } = require('../config');
+import { toZonedTime } from 'date-fns-tz';
 
 async function getAllEquipes() {
   try {
@@ -8,10 +9,10 @@ async function getAllEquipes() {
       let segundos = 0;
       if (equipe.tempo) {
         // Converte o tempo do banco e o momento atual para America/Sao_Paulo
-        const now = utcToZonedTime(new Date(), 'America/Sao_Paulo');
-        const tempo = utcToZonedTime(new Date(equipe.tempo), 'America/Sao_Paulo');
+        const now = toZonedTime(new Date(), 'America/Sao_Paulo');
+        const tempo = toZonedTime(new Date(equipe.tempo), 'America/Sao_Paulo');
         const diff = (now - tempo) / 1000;
-        segundos = Math.floor(Math.max(0, diff)); // Evita valores negativos
+        segundos = Math.floor(Math.max(0, diff)); 
       }
       return { ...equipe, tempo: segundos };
     });
